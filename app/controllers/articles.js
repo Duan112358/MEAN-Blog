@@ -4,7 +4,8 @@
 var mongoose = require('mongoose'),
     async = require('async'),
     Article = mongoose.model('Article'),
-    _ = require('underscore');
+    _ = require('underscore'),
+    moment = require("moment");
 
 
 /**
@@ -82,6 +83,39 @@ exports.all = function(req, res) {
     Article.find().sort('-created').populate('user', 'name username').exec(function(err, articles) {
         if (err) {
             res.render('error', {
+                status: 500
+            });
+        } else {
+            res.jsonp(articles);
+        }
+    });
+};
+
+exports.queryByTag = function(req, res, next, tag) {
+    Article.find({
+        tags: {
+            $in: [tag]
+        }
+    }).exec(function(err, articles) {
+        if (err) {
+            res.render('err', {
+                status: 500
+            });
+        } else {
+            res.jsonp(articles);
+        }
+    })
+};
+
+exports.queryByMonth = function(req, res, next, date) {
+    Article.find({
+        created: {
+            $gte: date,
+            $lt: moment(date).add('months', 1).format()
+        }
+    }).exec(function(err, articles) {
+        if (err) {
+            res.render('err', {
                 status: 500
             });
         } else {

@@ -6,17 +6,21 @@
         "angular": "~1.0.6",
         "angular-resource": "~1.0.6",
         "angular-cookies": "~1.0.6",
+        "angular-sanitize": "~1.0.6",
         "angular-bootstrap": "~0.4.0",
         "angular-ui-utils": "0.0.4",
+        "showdown": "latest",
         "json3": "~3.2.4",
-        "jquery": "~1.9.1"
+        "jquery": "~1.9.1",
+        "moment": "latest",
+        "underscore": "latest"
     },
     "exportsOverride": {
-    	"bootstrap": {
-    		"css": "docs/assets/css/bootstrap*.css",
-    		"js": "docs/assets/js/bootstrap.js",
-    		"img": "docs/assets/img/glyphicons-halflings*.png"
-    	},
+        "bootstrap": {
+            "css": "docs/assets/css/bootstrap*.css",
+            "js": "docs/assets/js/bootstrap.js",
+            "img": "docs/assets/img/glyphicons-halflings*.png"
+        },
         "angular-ui-utils": {
             "modules": "modules/route/route.js"
         }

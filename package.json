@@ -30,10 +30,12 @@
         "passport-github": "latest",
         "passport-google-oauth": "latest",
         "underscore": "latest",
+        "moment":"latest",
         "async": "latest",
         "view-helpers": "latest",
         "mean-logger": "latest",
         "forever": "latest",
+        "showdown":"latest",
         "grunt": "latest",
         "grunt-cli": "latest",
         "grunt-bower-task": "latest"

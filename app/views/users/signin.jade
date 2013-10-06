@@ -1,20 +1,27 @@
 extends auth
 
 block auth
-  form.signin.form-horizontal(action="/users/session", method="post")
-    p.error= message
-    .control-group
-      label.control-label(for='email') Email
-      .controls
-        input#email(type='text', name="email", placeholder='Email')
+  form.form-horizontal(action="/users/session", method="post",name="signinForm")
+    .panel.panel-info.animated.fadeIn
+      .panel-heading
+        h4.panel-title Signin
+      .panel-body
+        if(!!message)
+          p.text-error= message
+        .form-group
+          .input-group.col-md-offset-1.col-md-10
+            span.input-group-addon
+              i.icon-envelope
+            input.form-control(type='text', name="email", placeholder='Email', required)
+        .form-group
+          .input-group.col-md-offset-1.col-md-10
+            span.input-group-addon
+              i.icon-key
+            input.form-control(type='password', name="password", placeholder='Password', required)
 
-    .control-group
-      label.control-label(for='password') Password
-      .controls
-        input#password(type='password', name="password", placeholder='Password')
-
-    .form-actions
-      button.btn.btn-primary(type='submit') Sign in
-      &nbsp;
-      | or&nbsp;
-      a.show-signup(href="/signup") Sign up
+        .form-group
+          .col-md-offset-1.col-md-10
+            button.btn.btn-primary(type='submit', ng-disabled="signinForm.$invalid") Sign in
+            &nbsp;
+            | or&nbsp;
+            a.show-signup(href="/signup") Sign up

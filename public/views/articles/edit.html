@@ -1,25 +1,74 @@
-<section data-ng-controller="ArticlesController" data-ng-init="findOne()">
-	<form class="form-horizontal" data-ng-submit="update()">
-		<div class="control-group">
-			<label class="control-label" for="title">Title</label>
+<section data-ng-controller="ArticlesController" data-ng-init="findOne()" name="articleCtrl">
+    <div class="breadcrumb">
+        <li>
+            <a href="#!/articles">Articles</a>
+        </li>
+        <li>
+            <a href="#!/articles/{{article._id}}">{{article.title}}</a>
+        </li>
+        <li class="active">
+            Edit
+        </li>
+    </div>
+    <form class="form-horizontal" ng-class="{'hide':preview}" data-ng-submit="update()" data-ng-init="getUploads()">
+        <div class="form-group">
+            <div class="col-md-9 col-lg-9 col-sm-8">
+                <input class="form-control" type="text" data-ng-model="article.title" id="title" placeholder="Title" required>
+            </div>
+            <div class="col-md-3 col-lg-3 col-sm-4">
+                <label class="btn btn-default">
+                    <input type="checkbox" ng-model='article.markdown'>Markdown
+                </label>
+                <span class="btn btn-default" file-upload-trigger="#uploader">
+                    <i class="icon-upload icon-large"></i>
+                </span>
+                <input type="file" class="form-control hide" ng-file-select="upload($files)" id="uploader">
+                <span class="btn btn-default" ng-class="{'btn-primary':viewUploaded,'btn-default':!viewUploaded}" ng-click="viewUploaded = !viewUploaded" title="toggle click to see the files you uploaded recently.">
+                    <span class="badge">{{fileslist.length}}</span>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12" ng-class="{'hide':preview, 'col-md-12':!viewUploaded, 'col-md-7': viewUploaded}">
+                <textarea name="preview" id="preview" cols="30" rows="1" class="form-control" data-edit-target="#content" data-ng-model="article.preview"></textarea>
+                <textarea class="form-control" data-ng-model="article.content" id="content" cols="30" rows="30" placeholder="enter some content" data-edit-target="#preview" required></textarea>
 
-			<div class="controls">
-				<input type="text" data-ng-model="article.title" id="title" placeholder="Title" required>
-				</input>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label" for="content">Content</label>
-
-			<div class="controls">
-				<textarea data-ng-model="article.content" id="content" cols="30" rows="10" placeholder="Content">
-				</textarea>
-			</div>
-		</div>
-		<div class="control-group">
-			<div class="controls">
-				<input type="submit" class="btn">
-			</div>
-		</div>
-	</form>
+                <div class="hide col-md-5" ng-class="{'hide':!viewUploaded || preview}">
+                    <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="file in fileslist">
+                            <span class="badge" ng-bind="file.path"></span>
+                            {{file.originalName}}
+                        </li>
+                        <li class="list-group-item text-warning" ng-show="!fileslist.length">
+                            No files has uploaded in last 3 days.You can view all your uploaded files in uploads feature.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12">
+                <bs-tags-input type="text" ng-model="article.tags" tagClass="badge"/></bs-tags-input>
+            </div>
+        </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12">
+                <input type="submit" class="btn btn-primary" ng-disabled="articleForm.$invalid">
+                <a class="btn btn-success" ng-show='article.markdown' ng-click="preview = true">Preview</a>
+            </div>
+        </div>
+    </form>
+    <div class="panel panel-default animated fadeIn hide" ng-if='preview' ng-class="{'hide':!preview}">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                {{article.title}}
+                <a ng-click='preview=!preview' href="" class="pull-right close">&times;</a>
+            </h4>
+        </div>
+        <div class="panel-body">
+            <div btf-markdown="article.content">
+            </div>
+        </div>
+    </div>
 </section>

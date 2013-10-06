@@ -22,10 +22,7 @@ module.exports = function(app, passport) {
     app.use(express.favicon());
     app.use(express.static(config.root + '/public'));
 
-    //Don't use logger for test env
-    if (process.env.NODE_ENV !== 'test') {
-        app.use(express.logger('dev'));
-    }
+    app.use(express.logger('dev'));
 
     //Set views path, template engine and default layout
     app.set('views', config.root + '/app/views');
@@ -39,7 +36,9 @@ module.exports = function(app, passport) {
         app.use(express.cookieParser());
 
         //bodyParser should be above methodOverride
-        app.use(express.bodyParser());
+        app.use(express.bodyParser({
+            uploadDir: config.root + '/public/img/uploads'
+        }));
         app.use(express.methodOverride());
 
         //express/mongo session storage

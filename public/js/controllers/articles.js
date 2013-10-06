@@ -1,52 +1,97 @@
-angular.module('mean.articles').controller('ArticlesController', ['$scope', '$routeParams', '$location', 'Global', 'Articles', function ($scope, $routeParams, $location, Global, Articles) {
-    $scope.global = Global;
+angular.module('mean.articles').controller('ArticlesController', ['$scope', '$routeParams', '$location', 'Global', 'Articles', 'Uploader',
+    function($scope, $routeParams, $location, Global, Articles, Uploader) {
+        $scope.global = Global;
 
-    $scope.create = function() {
-        var article = new Articles({
-            title: this.title,
-            content: this.content
-        });
-        article.$save(function(response) {
-            $location.path("articles/" + response._id);
-        });
+        $scope.create = function() {
+            var article = new Articles({
+                title: this.title,
+                content: this.content,
+                markdown: this.markdown
+            });
+            article.$save(function(response) {
+                $location.path("articles/" + response._id);
+            });
 
-        this.title = "";
-        this.content = "";
-    };
+            this.title = "";
+            this.markdown = false;
+            this.content = "";
+        };
 
-    $scope.remove = function(article) {
-        article.$remove();  
+        $scope.confirmDelete = function() {
+            $scope.articleToDelete.$remove();
 
-        for (var i in $scope.articles) {
-            if ($scope.articles[i] == article) {
-                $scope.articles.splice(i, 1);
+            for (var i in $scope.articles) {
+                if ($scope.articles[i]._id == scope.articleToDelete._id) {
+                    $scope.articles.splice(i, 1);
+                }
             }
+        };
+
+        $scope.remove = function(article) {
+            $scope.articleToDelete = article;
+        };
+
+        $scope.update = function() {
+            var article = $scope.article;
+            if (!article.updated) {
+                article.updated = [];
+            }
+            article.updated.push(new Date().getTime());
+
+            article.$update(function() {
+                $location.path('articles/' + article._id);
+            });
+        };
+
+        $scope.find = function(query) {
+            Articles.query(query, function(articles) {
+                $scope.articles = articles;
+            });
+        };
+
+        $scope.findOne = function() {
+            Articles.get({
+                articleId: $routeParams.articleId
+            }, function(article) {
+                article.votes = article.votes + 1;
+                $scope.article = article;
+            });
+        };
+
+        $scope.upload = function($files) {
+            if ($files && $files.length) {
+                Uploader.upload($files[0], function(data) {
+                    $scope.fileslist.push(data);
+                });
+            }
+        };
+
+        $scope.getUploads = function(date) {
+            if (!date) {
+                date = moment().add('days', -3).format();
+            }
+            Uploader.query({
+                date: date
+            }, function(files) {
+                $scope.fileslist = files;
+            });
+        };
+
+        $scope.makeComment = function() {
+
+            var article = $scope.article;
+            article.comments.push($scope.comment);
+
+            if (!article.updated) {
+                article.updated = [];
+            }
+
+            article.updated.push(new Date().getTime());
+
+            article.$comment(article, function() {
+                $location.path('articles/' + article._id);
+                $scope.comment = {};
+            });
         }
-    };
-
-    $scope.update = function() {
-        var article = $scope.article;
-        if (!article.updated) {
-            article.updated = [];
-        }
-        article.updated.push(new Date().getTime());
-
-        article.$update(function() {
-            $location.path('articles/' + article._id);
-        });
-    };
-
-    $scope.find = function(query) {
-        Articles.query(query, function(articles) {
-            $scope.articles = articles;
-        });
-    };
-
-    $scope.findOne = function() {
-        Articles.get({
-            articleId: $routeParams.articleId
-        }, function(article) {
-            $scope.article = article;
-        });
-    };
-}]);
+    }
+]);
