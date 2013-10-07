@@ -1,5 +1,5 @@
-angular.module('mean.articles').controller('ArticlesController', ['$scope', '$routeParams', '$location', 'Global', 'Articles', 'Uploader',
-    function($scope, $routeParams, $location, Global, Articles, Uploader) {
+angular.module('mean.articles').controller('ArticlesController', ['$scope', '$timeout', '$routeParams', '$location', 'Global', 'Articles', 'Uploader', 'Tags',
+    function($scope, $timeout, $routeParams, $location, Global, Articles, Uploader, Tags) {
         $scope.global = Global;
 
         $scope.create = function() {
@@ -44,9 +44,19 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$ro
         };
 
         $scope.find = function(query) {
-            Articles.query(query, function(articles) {
-                $scope.articles = articles;
-            });
+            var tag = $routeParams.tag;
+            $scope.currenttag = tag;
+            if (tag) {
+                Tags.query({
+                    tag: tag
+                }, function(articles) {
+                    $scope.articles = articles;
+                })
+            } else {
+                Articles.query(query, function(articles) {
+                    $scope.articles = articles;
+                });
+            }
         };
 
         $scope.findOne = function() {
@@ -57,6 +67,16 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$ro
                 $scope.article = article;
             });
         };
+
+        $scope.$watch('article.votes', function(value){
+            if (!$scope.execuing) {
+                $scope.execuing = true;
+                $timeout(function() {
+                    $scope.article.$comment(function() {});
+                    $scope.execuing = false;
+                }, 10000);
+            }
+        });
 
         $scope.upload = function($files) {
             if ($files && $files.length) {
@@ -88,7 +108,7 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$ro
 
             article.updated.push(new Date().getTime());
 
-            article.$comment(article, function() {
+            article.$comment(function() {
                 $location.path('articles/' + article._id);
                 $scope.comment = {};
             });

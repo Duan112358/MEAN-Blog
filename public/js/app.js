@@ -1,5 +1,5 @@
 var depends = ['jquery', 'bs', 'angular', 'bs_datepicker', 'pace', 'underscore', 'moment',
-    'showdown', "md5", 'angular_pagination', 'angular_cookies', 'angular_resource',"bs_tagsinput",
+    'showdown', "md5", 'angular_pagination', 'angular_cookies', 'angular_resource', "bs_tagsinput",
     'angular_sanitize', "angular_file_upload"
 ];
 
@@ -14,36 +14,41 @@ require(depends, function(app) {
 
     window.app = angular.module('mean', angular_depends.concat(user_depends));
 
-    //Setting up route
-    window.app.config(['$routeProvider',
-        function($routeProvider) {
-            $routeProvider.
-            when('/articles', {
-                templateUrl: 'views/articles/list.html'
-            }).
-            when('/articles/create', {
-                templateUrl: 'views/articles/create.html'
-            }).
-            when('/articles/:articleId/edit', {
-                templateUrl: 'views/articles/edit.html'
-            }).
-            when('/articles/:articleId', {
-                templateUrl: 'views/articles/view.html'
-            }).
-            when('/', {
-                templateUrl: 'views/index.html'
-            }).
-            otherwise({
-                redirectTo: '/'
-            });
-        }
-    ]);
-
-    require(user_ctrls, function() {
+    require(user_ctrls, function(ArticlesCtrl, HeaderCtrl, IndexCtrl) {
         //Setting HTML5 Location Mode
         window.app.config(['$locationProvider',
             function($locationProvider) {
                 $locationProvider.hashPrefix("!");
+            }
+        ]);
+
+        //Setting up route
+        window.app.config(['$routeProvider',
+            function($routeProvider) {
+                $routeProvider.
+                when('/articles', {
+                    templateUrl: 'views/articles/list.html',
+                    controller: ArticlesCtrl
+                }).
+                when('/tag/:tag',{
+                    templateUrl: 'views/articles/list.html',
+                    controller: ArticlesCtrl
+                }).
+                when('/articles/create', {
+                    templateUrl: 'views/articles/create.html'
+                }).
+                when('/articles/:articleId/edit', {
+                    templateUrl: 'views/articles/edit.html'
+                }).
+                when('/articles/:articleId', {
+                    templateUrl: 'views/articles/view.html'
+                }).
+                when('/', {
+                    templateUrl: 'views/index.html'
+                }).
+                otherwise({
+                    redirectTo: '/'
+                });
             }
         ]);
 

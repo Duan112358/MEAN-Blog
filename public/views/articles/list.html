@@ -1,4 +1,11 @@
 <section data-ng-controller="ArticlesController" data-ng-init="find()">
+    <ul class="breadcrumb" ng-show="currenttag">
+        <li>
+            <a href="#!/articles">Articles</a>
+        </li>
+        <li>tags</li>
+        <li class="active" ng-bind="currenttag"></li>
+    </ul>
     <ul class="list-unstyled">
         <li data-ng-repeat="article in articles">
             <div class="panel panel-default">
@@ -19,6 +26,8 @@
                         <code time-ago="article.created">
                             {{article.created | date:'medium'}}
                         </code>
+                        <i class="icon-eye-open"></i>
+                        <code ng-bind="article.votes"></code>
                     </div>
                     <div ng-switch-when='true' btf-markdown="article.preview"></div>
                     <div ng-switch-when='false' ng-bind-html='article.preview'></div>
@@ -27,7 +36,7 @@
                     <i class="icon-tag"></i> 
                     <span ng-repeat="tag in article.tags">
                         [
-                        <a ng-href="/articles/{{tag}}" ng-bind="tag"></a>
+                        <a ng-href="#!/tag/{{tag}}" ng-bind="tag"></a>
                         ]
                     </span>
                     <button data-ng-show="global.user._id == article.user._id" ng-click="articleToDelete = article" class="btn btn-xs btn-danger pull-right modal-trigger" target-modal="#articleDeleteModal" target-action="remove(article)">

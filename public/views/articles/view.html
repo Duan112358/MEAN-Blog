@@ -22,6 +22,8 @@
                 <code>{{article.user.username}}</code>
                 <i class="icon-time"></i>
                 <code>{{article.created | date:'medium'}}</code>
+                <i class="icon-eye-open"></i>
+                <code ng-bind="article.votes"></code>
             </div>
             <div ng-switch-when='true' btf-markdown="article.content">
             </div>
@@ -30,7 +32,8 @@
         <div class="panel-footer">
             <i class="icon-tag" ng-show="article.tags"></i> 
             <span ng-repeat="tag in article.tags">
-                [ <a ng-href="/articles/{{tag}}" ng-bind="tag"></a> ]
+                [
+                <a ng-href="#!/tag/{{tag}}" ng-bind="tag"></a>]
             </span>
         </div>
     </div>
@@ -66,26 +69,28 @@
             </div>
         </div>
         <div class="list-group-item" id="comment_area">
-            <form name="commentForm" ng-submit="makeComment()" role="form" id="commentForm" class="col-md-12">
-                <div class="form-group reply-title">
-                    <span class="title">LEAVE A COMMENT</span>
-                </div>
-                <div class="form-group">
-                    <input id="nickname" class="form-control" type="text" name="NickName" placeholder="Nickname" ng-model="comment.nickname" required>
-                </div>
-                <div class="form-group">
-                    <input class="form-control" type="text" name="Email" placeholder="Email" ng-model="comment.email">
-                </div>
-                <div class="form-group">
-                    <input class="form-control" type="text" name="homepage" placeholder="Homepage" ng-model="comment.homepage">
-                </div>
-                <div class="form-group">
-                    <textarea class="form-control" rows="5" name="comment" placeholder="Leave a comment" ng-model="comment.comment" required></textarea>
-                </div>
-                <p>
-                    <button type="submit" class="btn btn-primary" ng-disabled="commentForm.$invalid">Post Comment</button>
-                </p>
-            </form>
+            <div id="commentForm">
+                <form name="commentForm" ng-submit="makeComment()" role="form" class="form">
+                    <div class="form-group reply-title">
+                        <span class="title">LEAVE A COMMENT</span>
+                    </div>
+                    <div class="form-group">
+                        <input id="nickname" class="form-control" type="text" name="NickName" placeholder="Nickname" ng-model="comment.nickname" required>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="Email" placeholder="Email" ng-model="comment.email">
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="text" name="homepage" placeholder="Homepage" ng-model="comment.homepage">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" rows="5" name="comment" placeholder="Leave a comment" ng-model="comment.comment" required></textarea>
+                    </div>
+                    <p>
+                        <button type="submit" class="btn btn-primary" ng-disabled="commentForm.$invalid">Post Comment</button>
+                    </p>
+                </form>
+            </div>
         </div>
     </ul>
     <div class="modal animated bounceInDown" id="articleDeleteModal">

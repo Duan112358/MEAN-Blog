@@ -157,8 +157,7 @@ p img {
 .reply-title .title{
     color:#d1dfec;
     text-shadow:1px 1px 1px #fff;
-    padding:10px 0px;
     font-size: 30px;
     padding: 25px 0px 10px 0;
-    margin-top:30px;
+    display: block;
 }

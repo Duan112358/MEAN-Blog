@@ -73,7 +73,11 @@ exports.destroy = function(req, res) {
  * Show an article
  */
 exports.show = function(req, res) {
-    res.jsonp(req.article);
+    if (req.article) {
+        res.jsonp(req.article);
+    } else if (req.articles) {
+        res.jsonp(req.articles);
+    }
 };
 
 /**
@@ -92,19 +96,18 @@ exports.all = function(req, res) {
 };
 
 exports.queryByTag = function(req, res, next, tag) {
+    console.log(tag);
     Article.find({
         tags: {
             $in: [tag]
         }
     }).exec(function(err, articles) {
-        if (err) {
-            res.render('err', {
-                status: 500
-            });
-        } else {
-            res.jsonp(articles);
-        }
-    })
+        if (err) return next(err);
+        if (!articles) return next(new Error('Failed to load tag ' + tag));
+        req.articles = articles;
+        next();
+    });
+
 };
 
 exports.queryByMonth = function(req, res, next, date) {
@@ -114,12 +117,9 @@ exports.queryByMonth = function(req, res, next, date) {
             $lt: moment(date).add('months', 1).format()
         }
     }).exec(function(err, articles) {
-        if (err) {
-            res.render('err', {
-                status: 500
-            });
-        } else {
-            res.jsonp(articles);
-        }
+        if (err) return next(err);
+        if (!articles) return next(new Error('Failed to load tag ' + tag));
+        req.articles = articles;
+        next();
     });
 };
