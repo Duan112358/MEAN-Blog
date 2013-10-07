@@ -28,7 +28,7 @@
             <div ng-switch-when='false' ng-bind-html='article.content'></div>
         </div>
         <div class="panel-footer">
-            <i class="icon-tag"></i> 
+            <i class="icon-tag" ng-show="article.tags"></i> 
             <span ng-repeat="tag in article.tags">
                 [ <a ng-href="/articles/{{tag}}" ng-bind="tag"></a> ]
             </span>
@@ -38,7 +38,7 @@
         <span>
             <span class="badge">{{article.comments.length}} comments</span>
         </span>
-        <button class="btn pull-right" type="button" title="leave a comment">
+        <button class="btn btn-default pull-right" type="button" title="leave a comment" data-anchor-target="commentForm" data-anchor-focus="#nickname">
             <i class="icon-comment icon-large"></i>
         </button>
     </div>
@@ -57,21 +57,21 @@
                     </div>
                     <div class="list-group-item-text">
                         <span ng-bind="comment.comment"></span>
-                        <button type="button" class="btn pull-right" data-comment-target="#commentForm" data-comment-append="#{{comment._id}}" title="reply" ng-hide="reply" ng-click="reply=true">
+                        <button type="button" class="btn btn-default pull-right" data-comment-target="#commentForm" data-append-target="comment._id" title="reply" ng-hide="reply" ng-click="reply=true">
                             <i class="icon-reply icon-large"></i>
                         </button>
-                        <button type="button" class="btn pull-right" ng-show="reply" ng-click="reply=false">Cancel Reply</button>
+                        <button type="button" class="btn btn-default pull-right" ng-show="reply" ng-click="reply=false">Cancel Reply</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="list-group-item" id="comment_area">
-            <form name="commentForm" ng-submit="makeComment()" role="form" id="commentForm">
+            <form name="commentForm" ng-submit="makeComment()" role="form" id="commentForm" class="col-md-12">
                 <div class="form-group reply-title">
                     <span class="title">LEAVE A COMMENT</span>
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="text" name="NickName" placeholder="Nickname" ng-model="comment.nickname" required>
+                    <input id="nickname" class="form-control" type="text" name="NickName" placeholder="Nickname" ng-model="comment.nickname" required>
                 </div>
                 <div class="form-group">
                     <input class="form-control" type="text" name="Email" placeholder="Email" ng-model="comment.email">

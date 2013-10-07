@@ -213,23 +213,41 @@ directive('commentTarget', function() {
         link: function(scope, element, attrs) {
             if (attrs.commentTarget) {
                 var target = angular.element(attrs.commentTarget);
+                // var appendTarget = angular.element('#' + scope.$eval(attrs.appendTarget));
+                var appendTarget = element.parent().parent();
                 var originalParent = target.parent();
-                var appendTarget = angular.element(attrs.commentAppend);
 
-                element.bind('click', function() {
-
-                    scope.$watch(attrs.ngHide, function(value) {
+                scope.$watch(attrs.ngHide, function(value) {
+                    if (value != undefined) {
                         if (!value) {
                             originalParent.append(target);
                         } else {
                             appendTarget.append(target);
+                            angular.element('#nickname').focus();
                         }
-                    })
-                });
+                    }
+                })
             }
         }
     }
-});
+}).
+directive('anchorTarget', ["$location", "$anchorScroll",
+    function($location, $anchorScroll) {
+        return {
+            restrict: 'AC',
+            link: function(scope, element, attrs) {
+                element.bind('click', function() {
+                    $location.hash(attrs.anchorTarget);
+                    $anchorScroll();
+
+                    if (attrs.anchorFocus) {
+                        angular.element(attrs.anchorFocus).focus();
+                    }
+                });
+            }
+        };
+    }
+]);
 
 module.directive('bsTagsInput', [
     function() {
