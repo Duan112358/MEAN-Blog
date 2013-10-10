@@ -13,9 +13,12 @@ MEAN is a boilerplate that provides a nice starting point for [MongoDB](http://w
 * Express - Defined as npm module in the [package.json](package.json) file.
 * Mongoose - Defined as npm module in the [package.json](package.json) file.
 * Passport - Defined as npm module in the [package.json](package.json) file.
+* RequireJS - Defined as npm module in the [package.json](package.json) file.
 * AngularJS - Defined as bower module in the [bower.json](bower.json) file.
 * Twitter Bootstrap - Defined as bower module in the [bower.json](bower.json) file.
 * UI Bootstrap - Defined as bower module in the [bower.json](bower.json) file.
+* Showdown - Defined as bower module in the [bower.json](bower.json) file.
+* Moment - Defined as bower module in the [bower.json](bower.json) file.
 
 ## Quick Install
 

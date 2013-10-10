@@ -38,6 +38,7 @@
         "showdown":"latest",
         "grunt": "latest",
         "grunt-cli": "latest",
+        "requirejs":"latest",
         "grunt-bower-task": "latest"
     },
     "devDependencies": {
