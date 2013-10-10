@@ -9,6 +9,11 @@ MEAN is a boilerplate that provides a nice starting point for [MongoDB](http://w
 ### Optional
 * Grunt - Download and Install [Grunt](http://gruntjs.com).
 
+### Main Updates
+* Added in [Showdown](https://github.com/coreyti/showdown) to enable [Markdown](http://daringfireball.net/projects/markdown/)
+* Added in [Angular-File-Upload](https://github.com/danialfarid/angular-file-upload) to enable file upload features
+* Updated the Blog UI
+
 ## Additional Packages
 * Express - Defined as npm module in the [package.json](package.json) file.
 * Mongoose - Defined as npm module in the [package.json](package.json) file.
