@@ -65,18 +65,9 @@ angular.module('mean.articles').controller('ArticlesController', ['$scope', '$ti
             }, function(article) {
                 article.votes = article.votes + 1;
                 $scope.article = article;
+                $scope.article.$comment(function() {});
             });
         };
-
-        $scope.$watch('article.votes', function(value){
-            if (!$scope.execuing) {
-                $scope.execuing = true;
-                $timeout(function() {
-                    $scope.article.$comment(function() {});
-                    $scope.execuing = false;
-                }, 10000);
-            }
-        });
 
         $scope.upload = function($files) {
             if ($files && $files.length) {

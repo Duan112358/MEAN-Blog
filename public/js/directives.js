@@ -300,7 +300,9 @@ module.directive('bsTagsInput', [
                             scope.model.push(event.item);
 
                         if (!scope.model || !scope.model.length) {
-                            select.next().append('<span class="tag badge pull-right">add some tags</span>');
+                            if (!select.next().children('#placeholder').length) {
+                                select.next().append('<span class="tag badge pull-right" id="placeholder">type to add</span>');
+                            }
                         } else {
                             select.next().children('.pull-right').first().remove();
                         }
@@ -312,7 +314,9 @@ module.directive('bsTagsInput', [
                             scope.model.splice(idx, 1);
 
                         if (!scope.model || !scope.model.length) {
-                            select.next().append('<span class="tag badge pull-right">add some tags</span>');
+                            if (!select.next().children('#placeholder').length) {
+                                select.next().append('<span class="tag badge pull-right" id="placeholder">type to add</span>');
+                            }
                         } else {
                             select.next().children('.pull-right').first().remove();
                         }
@@ -347,7 +351,9 @@ module.directive('bsTagsInput', [
                         }
 
                         if (!scope.model || !scope.model.length) {
-                            select.next().append('<span class="tag badge pull-right">add some tags</span>');
+                            if (!select.next().children('#placeholder').length) {
+                                select.next().append('<span class="tag badge pull-right" id="placeholder">type to add</span>');
+                            }
                         } else {
                             select.next().children('.pull-right').first().remove();
                         }
